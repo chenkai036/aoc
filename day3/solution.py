@@ -23,11 +23,11 @@ def solution2(data: pandas.Series) -> int:
             bp += 1
         return int(current)
 
-    def mcv(nsize, ones):
-        return not (ones * 2 < nsize)
-
     def lcv(nsize, ones):
         return ones * 2 < nsize
+
+    def mcv(nsize, ones):
+        return not lcv(nsize, ones)
 
     series = data.apply(lambda v: int(v, base=2))
     nbits = data.apply(len).max()
