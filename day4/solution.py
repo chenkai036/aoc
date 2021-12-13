@@ -13,12 +13,6 @@ def read_input(filepath):
     return numbers, boards
 
 
-def win_when(current_index, prev_index, n):
-    if len(current_index) == n and len(prev_index) == n - 1:
-        return int(current_index.difference(prev_index).values)
-    return None
-
-
 def solution(draws, boards, win_value):
     dframe = pandas.concat(boards + [d.T for d in boards], ignore_index=True)
     prev_index = pandas.Int64Index([])
