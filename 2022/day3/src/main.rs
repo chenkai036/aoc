@@ -26,7 +26,7 @@ fn part1(reader: impl BufRead) -> u32 {
     priorities.sum()
 }
 
-fn priority_by_hashset(lines: impl Iterator<Item = String>) -> char {
+fn item_by_hashset(lines: impl Iterator<Item = String>) -> char {
     let initial : HashSet<char> = HashSet::from_iter("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".chars());
     let items = lines.map(|line| {
         HashSet::from_iter(line.chars()) as HashSet<char>
@@ -54,7 +54,7 @@ fn index_to_item(index: usize) -> char {
     }
 }
 
-fn priorty_by_array(lines: impl Iterator<Item = String>) -> char {
+fn item_by_array(lines: impl Iterator<Item = String>) -> char {
     let mut alphabet = [0u32; 26 * 2];
     lines.for_each(|line| {
         let items = line.chars().fold([false; 26 * 2], |mut accum, item| {
@@ -87,11 +87,11 @@ where GroupFn: Fn(Box<dyn Iterator<Item = String> + '_>) -> char {
 }
 
 fn part2_v1(reader: impl BufRead) -> u32 {
-    foreach_elf_group(reader, |egrp| priority_by_hashset(egrp))
+    foreach_elf_group(reader, |egrp| item_by_hashset(egrp))
 }
 
 fn part2_v2(reader: impl BufRead) -> u32 {
-    foreach_elf_group(reader, |egrp| priorty_by_array(egrp))
+    foreach_elf_group(reader, |egrp| item_by_array(egrp))
 }
 
 fn main() {
@@ -121,7 +121,9 @@ CrZsJsPPZsGzwwsLwLmpwMDw
 "#;
         let result = part1(BufReader::new(input.as_bytes()));
         assert_eq!(157, result);
-        let result = improved_part2(BufReader::new(input.as_bytes()));
+        let result = part2_v1(BufReader::new(input.as_bytes()));
+        assert_eq!(70, result);
+        let result = part2_v2(BufReader::new(input.as_bytes()));
         assert_eq!(70, result);
     }
 }
