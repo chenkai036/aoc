@@ -179,7 +179,7 @@ dir fhhwv
                 ].into(),
             }))));
 
-//         assert!(parse_cmd("$ lsxxx\n").is_err());
+       assert!(parse_cmd("$ lsxxx\n").is_err());
     }
 
     #[test]

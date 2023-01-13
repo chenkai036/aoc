@@ -45,7 +45,7 @@ fn part2(mut reader: impl BufRead) -> usize {
     }
     let freeup_size = required_size - unused_size;
     dir_sizes.sort();
-    *dir_sizes.iter().skip_while(|dsize| **dsize < freeup_size).next().unwrap_or(&0)
+    *dir_sizes.iter().skip_while(|dsize| **dsize < freeup_size).nth(0).unwrap_or(&0)
 }
 
 fn main() {
