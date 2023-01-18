@@ -162,11 +162,36 @@ fn part1(reader: impl BufRead) -> u32 {
     result
 }
 
+fn part2(reader: impl BufRead) -> u32 {
+    let grid = Grid::from(reader);
+    let mut result = 0;
+    let (rows, cols) = grid.shape;
+
+    for row in 0..rows {
+        for col in 0..cols {
+            if row == 0 || row == rows - 1 || col == 0 || col == cols - 1 {
+                result = max(result, 0);
+            } else {
+                let height = grid.value[row][col];
+                let up = 1 + (1..row).rev().take_while(|r| grid.value[*r][col] < height).count();
+                let down = 1 + (row+1..rows-1).take_while(|r| grid.value[*r][col] < height).count();
+                let left = 1 + (1..col).rev().take_while(|c| grid.value[row][*c] < height).count();
+                let right = 1 + (col+1..cols-1).take_while(|c| grid.value[row][*c] < height).count();
+                let score = (up * down * left * right) as u32;
+                result = max(result, score);
+            }
+        }
+    }
+    result
+}
+
 fn main() {
     let reader = BufReader::new(File::open("input/day8.txt").unwrap());
     println!("part1 = {}", part1(reader));
     let reader = BufReader::new(File::open("input/day8.txt").unwrap());
     println!("part1 using lookup = {}", part1_v2(reader));
+    let reader = BufReader::new(File::open("input/day8.txt").unwrap());
+    println!("part2 = {}", part2(reader));
 }
 
 #[cfg(test)]
@@ -186,6 +211,8 @@ r#"
 "#.trim();
         let reader = BufReader::new(input.as_bytes());
         assert_eq!(part1_v2(reader), 21);
+        let reader = BufReader::new(input.as_bytes());
+        assert_eq!(part2(reader), 8);
     }
 
 //  #[bench(loop)]
